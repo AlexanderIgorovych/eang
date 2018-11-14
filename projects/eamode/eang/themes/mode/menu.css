@@ -8,6 +8,11 @@
     justify-content: space-between;
     line-height: 25px;
 
+    & .node {
+      display: flex;
+      align-items: center;
+    }
+
     & .node-toggle {
       padding: 0;
       width: 1.4rem;

@@ -359,6 +359,12 @@ ea-drawer {
           width: 95%;
         }
       }
+      & eangio-nav {
+        width: 75%;
+        @media only screen and (max-width: 500px) {
+          width: 95%;
+        }
+      }
     }
     & ea-footer {
       margin-top: 4.5rem;

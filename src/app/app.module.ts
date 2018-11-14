@@ -7,6 +7,7 @@ import { AppComponent } from './app.component'
 import {
   LayoutModule,
   PanelModule,
+  MenuModule,
   AutoCompleteModule,
   ThemePickerModule,
   MarkdownModule
@@ -25,6 +26,7 @@ import { ButtonComponent } from './feature/button/button.component'
 import { HomeComponent } from './feature/home/home.component'
 import { CardComponent } from './feature/card/card.component'
 import { IconComponent } from './feature/icon/icon.component'
+import { NavComponent } from './feature/nav/nav.component'
 import { GetStartedComponent } from './feature/get-started/get-started.component'
 
 const routes: Routes = [
@@ -34,7 +36,8 @@ const routes: Routes = [
   { path: 'layout', component: LayoutComponent },
   { path: 'button', component: ButtonComponent },
   { path: 'card', component: CardComponent },
-  { path: 'icon', component: IconComponent }
+  { path: 'icon', component: IconComponent },
+  { path: 'nav', component: NavComponent }
 ]
 @NgModule({
   declarations: [
@@ -46,6 +49,7 @@ const routes: Routes = [
     HomeComponent,
     CardComponent,
     IconComponent,
+    NavComponent,
     GetStartedComponent
   ],
   imports: [
@@ -54,6 +58,7 @@ const routes: Routes = [
     LayoutModule,
     AutoCompleteModule,
     PanelModule,
+    MenuModule,
     ThemePickerModule,
     MarkdownModule,
     MdcButtonModule,

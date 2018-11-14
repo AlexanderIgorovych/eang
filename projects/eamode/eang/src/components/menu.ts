@@ -10,6 +10,7 @@ export interface MenuTreeItem {
   id?: any
   name: string
   depth?: number
+  isActive?: boolean
   isOpen?: boolean
   parent?: MenuTreeItem
   children?: MenuTreeItem[]
@@ -26,16 +27,13 @@ export interface MenuTreeItem {
           <span class="chevron-down" *ngIf="node.isOpen" role="icon"
             style="--ea-button-icon: var(--ea-icon-chevron-down); --ea-icon-margin: 0;" icon>
           </span>
-          <span
-            class="chevron-right" *ngIf="!node.isOpen" role="icon"
-              style="--ea-button-icon: var(--ea-icon-chevron-right); --ea-icon-margin: 0;" icon>
-            </span>
+          <span class="chevron-right" *ngIf="!node.isOpen" role="icon"
+            style="--ea-button-icon: var(--ea-icon-chevron-right); --ea-icon-margin: 0;" icon>
+          </span>
       </button>
-      <div>
-        <div (click)="onActivate()" class="name">
-          {{node.name}}
-        </div>
-      </div>
+      <span (click)="onActivate()" class="name">
+        {{node.name}}
+      </span>
     <aside>
       <ng-container *ngIf="controlPanelTemplate"
         [ngTemplateOutlet]="controlPanelTemplate"

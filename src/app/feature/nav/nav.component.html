@@ -1,0 +1,15 @@
+<div class="ea-card" unset>
+  <div class="ea-card-header">
+    <h1>Navigation</h1>
+    <span icon hamburger-menu style="width:2em; height:2em;"></span>
+  </div>
+</div>
+
+<ng-template #templateMenu let-data="node.data">
+  <span style="color: red">{{data.iconName}}</span>
+</ng-template>
+
+<ea-menu
+  [node]="node"
+  [controlPanelTemplate]="templateMenu">
+</ea-menu>
