@@ -24,11 +24,9 @@ export interface MenuTreeItem {
     [style.padding-left]="node.depth * 15 + 'px'"
     [attr.active]="node.isActive ? '' : null">
       <button *ngIf="node.children?.length > 0" (click)="onToggle()" class="node-toggle" custom>
-          <span class="chevron-down" *ngIf="node.isOpen" role="icon"
-            style="--ea-button-icon: var(--ea-icon-chevron-down); --ea-icon-margin: 0;" icon>
+          <span icon chevron-down *ngIf="node.isOpen" role="icon" style="margin: 0">
           </span>
-          <span class="chevron-right" *ngIf="!node.isOpen" role="icon"
-            style="--ea-button-icon: var(--ea-icon-chevron-right); --ea-icon-margin: 0;" icon>
+          <span icon chevron-right *ngIf="!node.isOpen" role="icon" style="margin: 0">
           </span>
       </button>
       <span (click)="onActivate()" class="name">
