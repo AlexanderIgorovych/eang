@@ -8,13 +8,11 @@ import { Component, OnInit } from '@angular/core'
 export class NavComponent implements OnInit {
   node = {
     name: 'Main menu',
-    orientation: 'horizontal',
-    data: {
-      link: '/stub'
-    },
+    icon: 'grid',
     children: [
     {
       name: 'Card',
+      icon: 'bell',
       data: {
         link: '/card',
         iconName: 'card'
@@ -22,6 +20,7 @@ export class NavComponent implements OnInit {
     },
     {
       name: 'Layout',
+      icon: 'bell-off',
       data: {
         link: '/layout',
         iconName: 'layout'
@@ -29,6 +28,7 @@ export class NavComponent implements OnInit {
     },
     {
       name: 'Icons',
+      icon: 'link-2',
       data: {
         link: '/icon' ,
         iconName: 'x'
@@ -36,6 +36,7 @@ export class NavComponent implements OnInit {
       children: [
         {
           name: 'Special',
+          icon: 'arrow-down',
           data: {
             link: '/special',
             iconName: 'x'

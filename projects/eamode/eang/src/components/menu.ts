@@ -9,6 +9,7 @@ import {
 export interface MenuTreeItem {
   id?: any
   name: string
+  icon?: string
   depth?: number
   isActive?: boolean
   isOpen?: boolean
@@ -30,6 +31,7 @@ export interface MenuTreeItem {
           </span>
       </button>
       <span (click)="onActivate()" class="name">
+      <span *ngIf="node.icon" icon class={{node.icon}}></span>
         {{node.name}}
       </span>
     <aside>
