@@ -3,9 +3,10 @@
     user-select: none;
     cursor: pointer;
     display: flex;
-    align-items: center;
+    align-items: left;
+    justify-content: flex-start;
+    flex-direction: column;
     font-weight: 400;
-    justify-content: space-between;
     line-height: 25px;
 
     & .node-toggle {
@@ -21,11 +22,14 @@
       align-items: center;
 
       & span {
-        height: 0.8em;
-        width: 0.8em;
+        margin: 0
       }
 
       &:hover {
+        border: none
+      }
+
+      &[disabled] {
         border: none
       }
     }
@@ -67,11 +71,6 @@
           }
         }
   
-        & .ea-tree-children {
-          & .node .name {
-            margin-left: 10px;
-          }
-        }
       }
 
       &[active] {
@@ -103,6 +102,17 @@
           }
         }
       }
+    }
+
+    & .ea-tree-children {
+
+      &.horizontal {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-start;
+      }
+
     }
 
   }

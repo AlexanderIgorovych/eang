@@ -10,6 +10,7 @@ export interface MenuTreeItem {
   id?: any
   name: string
   icon?: string
+  horizontal?: boolean
   depth?: number
   isActive?: boolean
   isOpen?: boolean
@@ -24,14 +25,23 @@ export interface MenuTreeItem {
     [class.has-children]="node.children?.length > 0"
     [style.padding-left]="node.depth * 15 + 'px'"
     [attr.active]="node.isActive ? '' : null">
-      <button *ngIf="node.children?.length > 0" (click)="onToggle()" class="node-toggle" custom>
+      <ng-container *ngIf="node.icon">
+        <button *ngIf="node.children?.length > 0; else noChildren" (click)="onToggle()" class="node-toggle" custom>
+          <span icon class={{node.icon}}></span>
+        </button>
+        <ng-template #noChildren>
+          <button class="node-toggle" custom disabled>
+            <span icon class={{node.icon}}></span>
+          </button>
+        </ng-template>
+      </ng-container>
+      <button *ngIf="!node.icon && node.children?.length > 0" (click)="onToggle()" class="node-toggle" custom>
           <span icon chevron-down *ngIf="node.isOpen" role="icon" style="margin: 0">
           </span>
           <span icon chevron-right *ngIf="!node.isOpen" role="icon" style="margin: 0">
           </span>
       </button>
       <span (click)="onActivate()" class="name">
-      <span *ngIf="node.icon" icon class={{node.icon}}></span>
         {{node.name}}
       </span>
     <aside>
@@ -41,7 +51,7 @@ export interface MenuTreeItem {
       </ng-container>
     </aside>
 </div>
-<div *ngIf="node.children?.length > 0 && node.isOpen" class="ea-tree-children">
+<div *ngIf="node.children?.length > 0 && node.isOpen" class="ea-tree-children" [class.horizontal]="!!node.horizontal">
   <ea-menu
     *ngFor="let child of node.children"
     [node]="child"
