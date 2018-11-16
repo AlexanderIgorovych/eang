@@ -10,8 +10,9 @@ export interface MenuTreeItem {
   id?: any
   name: string
   icon?: string
-  horizontal?: boolean
+  iconStyle?: string
   depth?: number
+  horizontal?: boolean
   isActive?: boolean
   isOpen?: boolean
   parent?: MenuTreeItem
@@ -27,11 +28,11 @@ export interface MenuTreeItem {
     [attr.active]="node.isActive ? '' : null">
       <ng-container *ngIf="node.icon">
         <button *ngIf="node.children?.length > 0; else noChildren" (click)="onToggle()" class="node-toggle" custom>
-          <span icon class={{node.icon}}></span>
+          <span icon class="{{node.icon}} {{node.iconStyle}}"></span>
         </button>
         <ng-template #noChildren>
           <button class="node-toggle" custom disabled>
-            <span icon class={{node.icon}}></span>
+            <span icon class="{{node.icon}} {{node.iconStyle}}"></span>
           </button>
         </ng-template>
       </ng-container>
@@ -53,7 +54,7 @@ export interface MenuTreeItem {
 </div>
 <div *ngIf="node.children?.length > 0 && node.isOpen" class="ea-tree-children" [class.horizontal]="!!node.horizontal">
   <ea-menu
-    *ngFor="let child of node.children"
+    *ngFor="let child of node.children; trackBy: track.bind(node)" 
     [node]="child"
     [toggleEvents]="toggleEvents"
     [activateEvents]="activateEvents"
@@ -70,7 +71,7 @@ export class MenuComponent implements OnInit {
   toggleEvents: EventEmitter<MenuTreeItem>
   @Input()
   activateEvents: EventEmitter<MenuTreeItem>
-
+  
   constructor() {
     console.log(this)
   }
@@ -88,8 +89,23 @@ export class MenuComponent implements OnInit {
 
   onActivate() {
     this.node.isActive = true
+    
     if (this.activateEvents) {
       this.activateEvents.emit(this.node)
     }
+
+    if (!this.node.parent){
+      return
+    }
+    for(let sibling of this.node.parent.children) {
+        if (sibling.name == this.node.name) {
+          continue
+        }
+        sibling.isActive = false
+    }
+  }
+
+  track(index, currentNode) {
+    return currentNode.parent = this
   }
 }

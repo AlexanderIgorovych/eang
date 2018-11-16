@@ -49,9 +49,11 @@
 
     & .node {
       display: flex;
+      line-height: 2.5em;
       align-items: center;
 
       &.has-children {
+        line-height: 2.5em;
         & .node-toggle span[chevron-right] {
           height: 0.7rem;
           width: 0.8rem;
