@@ -26,7 +26,7 @@ import { ButtonComponent } from './feature/button/button.component'
 import { HomeComponent } from './feature/home/home.component'
 import { CardComponent } from './feature/card/card.component'
 import { IconComponent } from './feature/icon/icon.component'
-import { NavComponent } from './feature/nav/nav.component'
+import { MenuComponent } from './feature/menu/menu.component'
 import { GetStartedComponent } from './feature/get-started/get-started.component'
 
 const routes: Routes = [
@@ -37,7 +37,7 @@ const routes: Routes = [
   { path: 'button', component: ButtonComponent },
   { path: 'card', component: CardComponent },
   { path: 'icon', component: IconComponent },
-  { path: 'nav', component: NavComponent }
+  { path: 'menu', component: MenuComponent }
 ]
 @NgModule({
   declarations: [
@@ -49,7 +49,7 @@ const routes: Routes = [
     HomeComponent,
     CardComponent,
     IconComponent,
-    NavComponent,
+    MenuComponent,
     GetStartedComponent
   ],
   imports: [

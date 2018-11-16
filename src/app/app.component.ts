@@ -3,39 +3,7 @@ import { Router } from '@angular/router'
 import { LayoutService } from 'projects/eamode/eang/src/services/layout.service'
 import { MenuTreeItem } from '@eamode/eang'
 
-@Component({
-  selector: 'eangio-root',
-  templateUrl: './app.component.html',
-  styles: []
-})
-export class AppComponent implements OnInit {
-  constructor(
-    public router: Router,
-    public layout: LayoutService
-  ) {}
-
-  menu = SIDE_MENU;
-  activated: EventEmitter<MenuTreeItem> = new EventEmitter<MenuTreeItem>();
-
-  shouldCloseDrawer() {
-    if (this.layout.isDrawerOverlay) {
-      this.layout.drawerState$.next('closed')
-    }
-  }
-
-  onActivate(e, scrollContainer) {
-    document.getElementsByTagName('ea-main')[0].scrollTop = 0
-  }
-
-  ngOnInit() {
-    this.activated.subscribe(
-      (item: MenuTreeItem) => {
-        this.router.navigate([item.data.link]);
-      })
-  }
-}
-
-const SIDE_MENU = {
+export const SIDE_MENU = {
   name: 'Main menu',
   isHidden: true,
   children: [
@@ -70,12 +38,45 @@ const SIDE_MENU = {
       }
     },
     {
-      name: 'Navigation',
+      name: 'Menu',
       icon: 'hamburger-menu',
       iconStyle: 'negative',
       data: {
-        link: '/nav'
+        link: '/menu'
       }
     }
   ]
+}
+
+@Component({
+  selector: 'eangio-root',
+  templateUrl: './app.component.html',
+  styles: []
+})
+export class AppComponent implements OnInit {
+
+  constructor(
+    public router: Router,
+    public layout: LayoutService
+  ) {}
+
+  menu = SIDE_MENU
+  activated: EventEmitter<MenuTreeItem> = new EventEmitter<MenuTreeItem>()
+
+  shouldCloseDrawer() {
+    if (this.layout.isDrawerOverlay) {
+      this.layout.drawerState$.next('closed')
+    }
+  }
+
+  onActivate(e, scrollContainer) {
+    document.getElementsByTagName('ea-main')[0].scrollTop = 0
+  }
+
+  ngOnInit() {
+    this.activated.subscribe(
+      (item: MenuTreeItem) => {
+        this.router.navigate([item.data.link])
+      })
+  }
 }

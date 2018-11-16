@@ -12,7 +12,7 @@ export interface MenuTreeItem {
   icon?: string
   iconStyle?: string
   horizontal?: boolean
-  isHidden?: boolean 
+  isHidden?: boolean
   isActive?: boolean
   isOpen?: boolean
   parent?: MenuTreeItem
@@ -27,7 +27,7 @@ export interface MenuTreeItem {
     [style.padding-left]="depth * 15 + 'px'"
     [attr.active]="node.isActive ? '' : null">
       <ng-container *ngIf="node.icon">
-        <button *ngIf="node.children?.length > 0; else noChildren" (click)="onToggle()" class="node-toggle" custom>
+        <button *ngIf="node.children?.length > 0 else noChildren" (click)="onToggle()" class="node-toggle" custom>
           <span icon class="{{node.icon}} {{node.iconStyle}}"></span>
         </button>
         <ng-template #noChildren>
@@ -54,7 +54,7 @@ export interface MenuTreeItem {
 </div>
 <div *ngIf="node.children?.length > 0 && (node.isOpen || node.isHidden)" class="ea-tree-children" [class.horizontal]="!!node.horizontal">
   <ea-menu
-    *ngFor="let child of node.children; trackBy: track.bind(node)" 
+    *ngFor="let child of node.children trackBy: track.bind(node)"
     [node]="child"
     [depth]="depth + 1"
     [toggleEvents]="toggleEvents"
@@ -67,20 +67,20 @@ export class MenuComponent implements OnInit {
   @Input()
   node
   @Input()
-  depth = 0;
+  depth = 0
   @Input()
   controlPanelTemplate
   @Input()
   toggleEvents: EventEmitter<MenuTreeItem>
   @Input()
   activateEvents: EventEmitter<MenuTreeItem>
-  
+
   constructor() {
   }
 
   ngOnInit(): void {
   }
-  
+
   onToggle() {
     if (this.node.children && this.node.children.length > 0) {
       this.node.isOpen = !this.node.isOpen
@@ -91,24 +91,24 @@ export class MenuComponent implements OnInit {
   }
 
   getTreeRoot(item: MenuTreeItem) {
-    return (item.parent) ? this.getTreeRoot(item.parent) : item;
+    return (item.parent) ? this.getTreeRoot(item.parent) : item
   }
 
   deactivateChildren(item: MenuTreeItem) {
-    item.isActive = false;
+    item.isActive = false
     if (item.children) {
       item.children.forEach(child => {
-        this.deactivateChildren(child);
-      });
+        this.deactivateChildren(child)
+      })
     }
   }
 
   onActivate() {
-    this.onToggle();
+    this.onToggle()
     const root = this.getTreeRoot(this.node)
     this.deactivateChildren(root)
     this.node.isActive = true
-    
+
     if (this.activateEvents) {
       this.activateEvents.emit(this.node)
     }
