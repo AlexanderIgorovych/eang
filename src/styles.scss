@@ -5,16 +5,20 @@
 .fluentdark,
 .mode,
 .material {
-  & [activity] {
+  & [activity],
+  & .activity {
     background: url('./assets/images/activity.svg');
   }
-  & [layout] {
+  & [layout],
+  & .layout {
     background: url('./assets/images/layout-icon.svg');
   }
-  & [button-icon] {
+  & [button-icon],
+  & .button-icon {
     background: url('./assets/images/button-icon.svg');
   }
-  & [pallete] {
+  & [pallete],
+  & .pallete {
     background: url('./assets/images/pallete.svg');
   }
 }
@@ -360,6 +364,7 @@ ea-drawer {
         }
       }
       & eangio-nav {
+        background: gray;
         width: 75%;
         @media only screen and (max-width: 500px) {
           width: 95%;

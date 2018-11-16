@@ -11,8 +11,8 @@ export interface MenuTreeItem {
   name: string
   icon?: string
   iconStyle?: string
-  depth?: number
   horizontal?: boolean
+  isHidden?: boolean 
   isActive?: boolean
   isOpen?: boolean
   parent?: MenuTreeItem
@@ -22,9 +22,9 @@ export interface MenuTreeItem {
 @Component({
   selector: 'ea-menu',
   template: `
-  <div class="node"
+  <div class="node" *ngIf="!node.isHidden"
     [class.has-children]="node.children?.length > 0"
-    [style.padding-left]="node.depth * 15 + 'px'"
+    [style.padding-left]="depth * 15 + 'px'"
     [attr.active]="node.isActive ? '' : null">
       <ng-container *ngIf="node.icon">
         <button *ngIf="node.children?.length > 0; else noChildren" (click)="onToggle()" class="node-toggle" custom>
@@ -52,10 +52,11 @@ export interface MenuTreeItem {
       </ng-container>
     </aside>
 </div>
-<div *ngIf="node.children?.length > 0 && node.isOpen" class="ea-tree-children" [class.horizontal]="!!node.horizontal">
+<div *ngIf="node.children?.length > 0 && (node.isOpen || node.isHidden)" class="ea-tree-children" [class.horizontal]="!!node.horizontal">
   <ea-menu
     *ngFor="let child of node.children; trackBy: track.bind(node)" 
     [node]="child"
+    [depth]="depth + 1"
     [toggleEvents]="toggleEvents"
     [activateEvents]="activateEvents"
     [controlPanelTemplate]="controlPanelTemplate"></ea-menu>
@@ -66,6 +67,8 @@ export class MenuComponent implements OnInit {
   @Input()
   node
   @Input()
+  depth = 0;
+  @Input()
   controlPanelTemplate
   @Input()
   toggleEvents: EventEmitter<MenuTreeItem>
@@ -73,13 +76,13 @@ export class MenuComponent implements OnInit {
   activateEvents: EventEmitter<MenuTreeItem>
   
   constructor() {
-    console.log(this)
   }
+
   ngOnInit(): void {
-    console.log(this)
   }
+  
   onToggle() {
-    if (this.node.children.length > 0) {
+    if (this.node.children && this.node.children.length > 0) {
       this.node.isOpen = !this.node.isOpen
     }
     if (this.toggleEvents) {
@@ -87,25 +90,31 @@ export class MenuComponent implements OnInit {
     }
   }
 
+  getTreeRoot(item: MenuTreeItem) {
+    return (item.parent) ? this.getTreeRoot(item.parent) : item;
+  }
+
+  deactivateChildren(item: MenuTreeItem) {
+    item.isActive = false;
+    if (item.children) {
+      item.children.forEach(child => {
+        this.deactivateChildren(child);
+      });
+    }
+  }
+
   onActivate() {
+    this.onToggle();
+    const root = this.getTreeRoot(this.node)
+    this.deactivateChildren(root)
     this.node.isActive = true
     
     if (this.activateEvents) {
       this.activateEvents.emit(this.node)
     }
-
-    if (!this.node.parent){
-      return
-    }
-    for(let sibling of this.node.parent.children) {
-        if (sibling.name == this.node.name) {
-          continue
-        }
-        sibling.isActive = false
-    }
   }
 
   track(index, currentNode) {
-    return currentNode.parent = this
+    currentNode.parent = this
   }
 }
