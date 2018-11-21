@@ -10,7 +10,8 @@ import {
   AutoCompleteModule,
   ThemePickerModule,
   MarkdownModule,
-  MenuModule
+  MenuModule,
+  TabsModule
 } from '@eamode/eang'
 
 import {
@@ -67,6 +68,7 @@ const routes: Routes = [
     MdcRippleModule,
     MdcRadioModule,
     MenuModule,
+    TabsModule,
     RouterModule.forRoot(routes, { scrollPositionRestoration: 'top' })
   ],
   providers: [],
