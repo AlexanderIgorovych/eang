@@ -12,6 +12,7 @@ export interface MenuTreeItem {
   icon?: string
   iconStyle?: string
   horizontal?: boolean
+  closeable?: boolean
   isHidden?: boolean
   isActive?: boolean
   isOpen?: boolean
@@ -42,6 +43,9 @@ export interface MenuTreeItem {
       <span class="name">
         {{node.name}}
       </span>
+      <button *ngIf="node.closeable" class="node-toggle close" (click)="onClose($event)">
+        <span icon x negative></span>
+      </button>
     <aside>
       <ng-container *ngIf="controlPanelTemplate"
         [ngTemplateOutlet]="controlPanelTemplate"
@@ -54,6 +58,7 @@ export interface MenuTreeItem {
     *ngFor="let child of node.children trackBy: track.bind(node)"
     [node]="child"
     [depth]="depth + 1"
+    [closeEvents]="closeEvents"
     [toggleEvents]="toggleEvents"
     [activateEvents]="activateEvents"
     [controlPanelTemplate]="controlPanelTemplate"></ea-menu>
@@ -68,6 +73,8 @@ export class MenuComponent implements OnInit {
   @Input()
   controlPanelTemplate
   @Input()
+  closeEvents: EventEmitter<MenuTreeItem>
+  @Input()
   toggleEvents: EventEmitter<MenuTreeItem>
   @Input()
   activateEvents: EventEmitter<MenuTreeItem>
@@ -75,6 +82,17 @@ export class MenuComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+
+  onClose(event?) {
+    if (event) {
+      event.stopPropagation()
+    }
+    this.node.isOpen = false
+    this.node.isHidden = true
+    if (this.closeEvents) {
+      this.closeEvents.emit(this.node)
+    }
+  }
 
   onToggle(event?) {
     if (event) {

@@ -11,7 +11,7 @@ import { TabComponent } from './tab'
 @Component({
   selector: 'ea-tabs',
   template: `
-  <ea-menu [node]="menu" [activateEvents]="activated">
+  <ea-menu [node]="menu" [activateEvents]="activated" [closeEvents]="closed">
   </ea-menu> 
   <ng-content select="ea-tab"></ng-content>
   `,
@@ -28,6 +28,7 @@ export class TabsComponent implements AfterContentInit {
     children: []
   }
   activated = new EventEmitter<MenuTreeItem>()
+  closed = new EventEmitter<MenuTreeItem>()
 
   constructor() {}
 
@@ -36,11 +37,25 @@ export class TabsComponent implements AfterContentInit {
     tab.activeAttr = ''
   }
 
+  closeTab(tab: TabComponent) {
+    tab.closedAttr = ''
+    if (tab.activeAttr === '') {
+      const openedTabs = this.tabs.filter(tab => tab.closedAttr !== '')
+      if (openedTabs.length > 0) {
+        const openedMenus = this.menu.children.filter(child => !child.isHidden)
+        openedMenus[0].isActive = true
+        this.activateTab(openedTabs[0])
+      } else {
+        tab.activeAttr = null;
+      }
+    }
+  }
+
   ngAfterContentInit() {
     if (this.tabs.length > 0) {
       this.tabs.forEach(tab => {
         console.log(tab)
-        this.menu.children.push({ name: tab.name })
+        this.menu.children.push({ name: tab.name, closeable: tab.closeable })
       })
 
       this.menu.children[0].isActive = true
@@ -50,6 +65,11 @@ export class TabsComponent implements AfterContentInit {
     this.activated.subscribe((activatedItem: MenuTreeItem) => {
       const tab = this.tabs.find(tab => tab.name === activatedItem.name)
       this.activateTab(tab)
+    })
+
+    this.closed.subscribe((closedItem: MenuTreeItem) => {
+      const tab = this.tabs.find(tab => tab.name === closedItem.name)
+      this.closeTab(tab)
     })
   }
 }
